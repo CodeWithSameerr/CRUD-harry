@@ -47,6 +47,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 </head>
 
 <body>
+
+  <!-- Edit modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">
+  Edit Modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editModalLabel">Edit Note</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form action="/crud/index.php" method="post">
+        <div class="mb-3">
+          <label for="title" class="form-label">Note Title</label>
+          <input type="text" class="form-control" id="titleEdit" name="titleEdit">
+        </div>
+
+        <div class="mb-3">
+          <label for="desc" class="form-label">Note Description</label>
+          <textarea class="form-control" id="descriptionEdit" name="descriptionEdit" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Note</button>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   <header>
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
       <div class="container">
@@ -89,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       }
 
     ?>
+
     <div class="container my-3">
       <h2>Add a Note</h2>
       <form action="/crud/index.php" method="post">
@@ -131,13 +168,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <th scope='row'>". $no ."</th>
             <td>" . $row['title'] . "</td>
             <td>" . $row['description'] . "</td>
-            <td>Actions</td>
+            <td> 
+                    <button class='edit btn btn-sm btn-primary'>Edit</button>
+                     <a href='/del'> Delete </a></td>
              </tr>";
 
+
              
-          }
+          } 
           ?>
-       
         </tbody>
       </table>
 
@@ -150,6 +189,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
   <script>
     let table = new DataTable('#myTable');
+  </script>
+
+  <!-- Edit  -->
+  <script>
+   edits =  document.getElementsByClassName('edit');
+   Array.from(edits).forEach((element)=> {
+      element.addEventListener("click", (e)=>{
+        console.log("edit ", );
+
+          tr = e.target.parentNode.parentNode
+          title = tr.getElementsByTagName("td")[0].innerText;
+          description = tr.getElementsByTagName("td")[0].innerText;
+          console.log(title, description);
+          titleEdit.value = title;
+          descriptionEdit.value = description;
+
+          $('#editModal').modal('toggle');
+      })
+   });
   </script>
 </body>
 
