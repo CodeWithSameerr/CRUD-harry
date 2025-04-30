@@ -15,9 +15,15 @@ if (!$conn) {
   die("Sorry Database not Connected" . mysqli_connect_error());
 }
 
+
+// exit();
 // Inserting Data query 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
+if(isset($_POST['snoEdit'])){
+  echo "yes";
+  exit();
+}
   $title = $_POST['title']; 
   $description = $_POST['description'];
 
@@ -62,7 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+
       <form action="/crud/index.php" method="post">
+        <input type="hidden" name="snoEdit" id="snoEdit" > 
         <div class="mb-3">
           <label for="title" class="form-label">Note Title</label>
           <input type="text" class="form-control" id="titleEdit" name="titleEdit">
@@ -128,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <div class="container my-3">
       <h2>Add a Note</h2>
-      <form action="/crud/index.php" method="post">
+      <form action="/crud/index.php?update-true" method="POST">
         <div class="mb-3">
           <label for="title" class="form-label">Note Title</label>
           <input type="text" class="form-control" id="title" name="title">
@@ -170,13 +178,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <td>" . $row['description'] . "</td>
             <td> 
                     <button class='edit btn btn-sm btn-primary'>Edit</button>
-                     <a href='/del'> Delete </a></td>
+                     <button class='edit btn btn-sm btn-danger'  id=". $row['sno'].">delete</button>
              </tr>";
 
-
-             
           } 
           ?>
+                   
+
         </tbody>
       </table>
 
@@ -204,8 +212,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
           console.log(title, description);
           titleEdit.value = title;
           descriptionEdit.value = description;
-
+          snoEdit.value = e.target.id;
+          console.log(e.target.id);
+          
           $('#editModal').modal('toggle');
+
+
       })
    });
   </script>
